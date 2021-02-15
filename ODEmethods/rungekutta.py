@@ -180,9 +180,13 @@ class RKMethod:
     adaptive - switch for enabling adaptive stepsize
     tolerance - parameter for the condition of the adaptive stepsize
     returns: (x, y, error) arrays of steps and their values and error estimate of values (if the method calculates it)."""
+        try:
+            n = len(y0)
+        except:
+            n = 1
         x = numpy.arange(stepnum + 1, dtype=float)
-        y = numpy.empty([stepnum + 1, numpy.array(y0).shape[0]], dtype=float)
-        error = numpy.empty([stepnum + 1, numpy.array(y0).shape[0]], dtype=float)
+        y = numpy.empty((stepnum + 1, n), dtype=float)
+        error = numpy.empty((stepnum + 1, n), dtype=float)
 
         x = x * stepsize + x0
         y[0] = y0

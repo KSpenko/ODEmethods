@@ -57,8 +57,12 @@ class PECE:
     stepsize - distance between steps,
     runcorr - number of how many times to correct each step prediction,
     returns: (x, y) arrays of steps and their values."""
+        try:
+            n = len(y0)
+        except:
+            n = 1
         x = numpy.arange(stepnum + 1, dtype=float)
-        y = numpy.empty([stepnum + 1, y0.shape[0]], dtype=float)
+        y = numpy.empty((stepnum + 1, n), dtype=float)
         pred_len = len(self.predictor)
         corr_len = len(self.corrector)
 

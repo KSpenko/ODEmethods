@@ -50,8 +50,12 @@ class SymIntegrator:
     stepnum - number of steps to predict,
     stepsize - distance between steps,
     returns: (x, y) arrays of steps and their values."""
+        try:
+            n = len(y0)
+        except:
+            n = 1
         x = numpy.arange(stepnum + 1, dtype=float)
-        y = numpy.empty([stepnum + 1, y0.shape[0]], dtype=float)
+        y = numpy.empty((stepnum + 1, n), dtype=float)
 
         x = x * stepsize + x0
         y[0] = y0
