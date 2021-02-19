@@ -1,6 +1,8 @@
 README.txt
 setup.py
 ODEmethods/__init__.py
+ODEmethods/coefficients.py
+ODEmethods/methods.py
 ODEmethods/pece.py
 ODEmethods/rungekutta.py
 ODEmethods/symplectic.py
