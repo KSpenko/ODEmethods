@@ -6,7 +6,7 @@ setup(
     packages=find_packages(exclude=['tests*']),
     license='MIT',
     description='Python package that includes numerical methods for solving ordinary differential equations (initial value problems).',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     install_requires=['numpy'],
     url='https://github.com/KSpenko/ODEmethods',
     author='Krištof Špenko',
