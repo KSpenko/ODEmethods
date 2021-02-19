@@ -30,6 +30,7 @@ pc2 = problem_pc.run(x0=0, y0=21, stepnum=100, runcorr=3)
 
 # Script for plotting graphs
 fig = plt.figure()
+plt.suptitle("Newton's law of cooling")
 fig.set_size_inches(12, 7)
 
 plt.subplot(2, 2, 1)
@@ -74,5 +75,6 @@ plt.ylabel(r'$\delta T(t)$')
 plt.xlim(-1., 50.)
 plt.legend()
 
-plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95, wspace=0.25, hspace=0.3)
+plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.92, wspace=0.25, hspace=0.3)
+plt.savefig("tests/newton_cooling/newton_cooling.png")
 plt.show()

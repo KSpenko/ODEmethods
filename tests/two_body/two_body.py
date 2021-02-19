@@ -21,7 +21,7 @@ def two_body(t, y, par=[1., 0.1, 2.]):
     return [v[0], ax1, v[1], ay1, v[2], ax2, v[3], ay2]
 
 par=[1, 0.1, 2]
-n=10000
+n=1000
 h=0.2
 y0=[5.,-0.3,-5.,0.,1.,-0.0001,1.,0.]
 
@@ -61,11 +61,12 @@ for i in range(len(data)):
 
 ax.set_xlim(-10,10)
 ax.set_ylim(-10,10)
-ax.set_title("Two-body problem")
 ax.set_xlabel(r'$x$')
 ax.set_ylabel(r'$y$')
 ax.legend((lines[0],lines[2],lines[4]),("original_rk","p4c5_3", "PEFRL"))
+plt.suptitle("Two-body problem")
 
-line_ani = animation.FuncAnimation(fig, update_lines, n+1, fargs=(data, lines), interval=1, blit=False)
-
+line_ani = animation.FuncAnimation(fig, update_lines, n+1, fargs=(data, lines), interval=1, blit=False, save_count=n+1)
+writergif = animation.PillowWriter(fps=30)
+line_ani.save("tests/two_body/two_body.gif", writer=writergif)
 plt.show()

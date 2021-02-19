@@ -51,7 +51,9 @@ plt.semilogx(rk[0], rk[1][7])
 
 plt.xlabel(r'$t$')
 plt.ylabel(r'$N(t)$')
+plt.suptitle("Iodine clock: Persulfate variation")
 plt.legend(('$S_2 O^{2-}_8$', '$I^-$', '$IS_2 O^{2-}_8$', '$I_2$', '$SO^{2-}_4$', '$S_2 O^{2-}_3$', '$IS_2 O^{-}_3$', '$S_4 O^{2-}_6$'), loc='upper left')
 
-plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95, wspace=0.25, hspace=0.3)
+plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.9, wspace=0.25, hspace=0.3)
+plt.savefig("tests/iodine_clock/iodine_clock.png")
 plt.show()

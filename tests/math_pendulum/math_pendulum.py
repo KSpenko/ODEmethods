@@ -20,7 +20,8 @@ n=10000
 h=0.1
 
 fig, axs = plt.subplots(3, 1)
-fig.set_size_inches(10, 10)
+plt.suptitle("Mathematical pendulum")
+fig.set_size_inches(8, 8)
 
 for y0 in [[-3.*np.pi, 1.],[-3.*np.pi, 2.5],[3.*np.pi, -1.],[3.*np.pi, -2.5],[-2.*np.pi, 1.9],[-2.*np.pi, 1.7],[-2.*np.pi, 1.],[-2.*np.pi, 0.5],[2.*np.pi, 1.9],[2.*np.pi, 1.7],[2.*np.pi, 1.],[2.*np.pi, 0.5],[0., 1.9],[0., 1.7],[0., 1.],[0., 0.5]]:
     # RK methods
@@ -68,10 +69,11 @@ axs[1].set_xlabel(r'$\Theta$')
 axs[1].set_ylabel(r'$d\Theta /dt$')
 axs[1].legend(["euler_rk","p1c2_1", "PEFRL"])
 
-axs[0].set_title("Conservation of energy")
+axs[2].set_title("Conservation of energy")
 axs[2].set_xlabel(r'$t$')
 axs[2].set_ylabel(r'$W_p(t)+W_k(t)$')
 axs[2].legend(["euler_rk","p1c2_1", "PEFRL"])
 
-plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95, wspace=0.25, hspace=0.3)
+plt.subplots_adjust(left=0.1, right=0.95, bottom=0.07, top=0.92, wspace=0.25, hspace=0.4)
+plt.savefig("tests/math_pendulum/math_pendulum.png")
 plt.show()
