@@ -100,5 +100,5 @@ plt.xlim(-1., 10000.)
 plt.legend()
 
 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.92, wspace=0.25, hspace=0.3)
-plt.savefig("tests/newton_cooling/newton_cooling.png")
+plt.savefig("examples/newton_cooling/newton_cooling.png")
 plt.show()

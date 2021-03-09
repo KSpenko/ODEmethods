@@ -68,5 +68,5 @@ plt.suptitle("Two-body problem")
 
 line_ani = animation.FuncAnimation(fig, update_lines, n+1, fargs=(data, lines), interval=1, blit=False, save_count=n+1)
 writergif = animation.PillowWriter(fps=30)
-line_ani.save("tests/two_body/two_body.gif", writer=writergif)
+line_ani.save("examples/two_body/two_body.gif", writer=writergif)
 plt.show()

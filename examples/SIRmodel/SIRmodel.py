@@ -44,5 +44,5 @@ plt.ylabel(r'$\delta N(t)$')
 plt.legend()
 
 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.92, wspace=0.25, hspace=0.3)
-plt.savefig("tests/SIRmodel/SIRmodel.png")
+plt.savefig("examples/SIRmodel/SIRmodel.png")
 plt.show()

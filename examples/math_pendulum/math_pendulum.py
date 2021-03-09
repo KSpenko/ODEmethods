@@ -75,5 +75,5 @@ axs[2].set_ylabel(r'$W_p(t)+W_k(t)$')
 axs[2].legend(["euler_rk","p1c2_1", "PEFRL"])
 
 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.07, top=0.92, wspace=0.25, hspace=0.4)
-plt.savefig("tests/math_pendulum/math_pendulum.png")
+plt.savefig("examples/math_pendulum/math_pendulum.png")
 plt.show()
