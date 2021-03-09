@@ -32,6 +32,7 @@ The purpose of examples can be roughly summarised:
 * **Mathematical pendulum**: comparisson of all methods on a Hamiltonian system with analysis of method energy conservation,
 * **Two-body problem**: animation of method comparissons on a Hamiltonian system,
 * **Three-body problem**: animation of chaotic behaviour in a Hamiltonian system using the method of symplectic integrators.
+* **Hénon-Heiles system**: ploting a simple Poincare surface of section for a Hamiltonian system using symplectic integrators.
 
 ### Dependencies
 
