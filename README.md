@@ -41,7 +41,7 @@ The purpose of examples can be roughly summarised:
 
 ### Installing
 
-Package can be installed by running the following command:
+Package can be installed by running the following command (although one needs to have `git` installed on their computer):
 ```
 pip install git+git://github.com/KSpenko/ODEmethods.git#egg=ODEmethods
 ```
