@@ -19,10 +19,10 @@ def poincare(si):
     # poincare map for x=0
     si = np.array(si)
     y = []
-    for i in range(len(si[0])):
-        if (si[0,i] > 0. and si[0,i-1] <= 0.):
-            dx = si[0,i] - si[0,i-1]
-            y_poincare = si[:,i-1] + ((si[:,i] - si[:,i-1])/dx)*(0.-si[0,i-1])
+    for i in range(len(si)):
+        if (si[i,0] > 0. and si[i-1,0] <= 0.):
+            dx = si[i,0] - si[i-1,0]
+            y_poincare = si[i-1] + ((si[i] - si[i-1])/dx)*(0.-si[i-1,0])
             y.append(y_poincare)
     return np.array(y)
 
@@ -51,5 +51,5 @@ for i in range(len(e_ar)):
     axs[i].set_aspect(1)
 
 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.9, wspace=0.25, hspace=0.3)
-plt.savefig("examples/henon_heiles/henon_heiles.png")
+plt.savefig("henon_heiles.png")
 plt.show()

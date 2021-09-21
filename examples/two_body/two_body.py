@@ -31,7 +31,7 @@ si = problem_si.run(x0=0, y0=y0, stepnum=n, stepsize=h)
 
 # Runge-Kutta methods
 problem_rk = RKMethod(rk_methods["original_rk"], two_body, par)
-rk = problem_rk.run(x0=0, y0=y0, stepnum=n, stepsize=h)
+rk = problem_rk.run(x0=0, xf=(n-1)*h, y0=y0, init_step=h)
 
 # PECE methods
 problem_pc = PECE(predictor[3], corrector[3], two_body, par)
@@ -46,12 +46,12 @@ def update_lines(num, dataLines, lines):
 fig, ax = plt.subplots()
 
 data = np.empty((6, 2, n+1))
-data[0] = rk[1][:4:2]
-data[1] = rk[1][4::2]
-data[2] = pc[1][:4:2]
-data[3] = pc[1][4::2]
-data[4] = si[1][:4:2]
-data[5] = si[1][4::2]
+data[0] = np.transpose(rk[1][:,:4:2])
+data[1] = np.transpose(rk[1][:,4::2])
+data[2] = np.transpose(pc[1][:,:4:2])
+data[3] = np.transpose(pc[1][:,4::2])
+data[4] = np.transpose(si[1][:,:4:2])
+data[5] = np.transpose(si[1][:,4::2])
 
 lines = []
 colors = ["green","lightgreen","red","pink","blue","lightblue"]
@@ -68,5 +68,5 @@ plt.suptitle("Two-body problem")
 
 line_ani = animation.FuncAnimation(fig, update_lines, n+1, fargs=(data, lines), interval=1, blit=False, save_count=n+1)
 writergif = animation.PillowWriter(fps=30)
-line_ani.save("examples/two_body/two_body.gif", writer=writergif)
+line_ani.save("two_body.gif", writer=writergif)
 plt.show()

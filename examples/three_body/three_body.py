@@ -58,15 +58,15 @@ fig = plt.figure()
 ax = p3.Axes3D(fig)
 
 data = np.empty((9, 3, n+1))
-data[0] = si1[1][:6:2]
-data[1] = si1[1][6:12:2]
-data[2] = si1[1][12::2]
-data[3] = si2[1][:6:2]
-data[4] = si2[1][6:12:2]
-data[5] = si2[1][12::2]
-data[6] = si3[1][:6:2]
-data[7] = si3[1][6:12:2]
-data[8] = si3[1][12::2]
+data[0] = np.transpose(si1[1][:,:6:2])
+data[1] = np.transpose(si1[1][:,6:12:2])
+data[2] = np.transpose(si1[1][:,12::2])
+data[3] = np.transpose(si2[1][:,:6:2])
+data[4] = np.transpose(si2[1][:,6:12:2])
+data[5] = np.transpose(si2[1][:,12::2])
+data[6] = np.transpose(si3[1][:,:6:2])
+data[7] = np.transpose(si3[1][:,6:12:2])
+data[8] = np.transpose(si3[1][:,12::2])
 
 lines = []
 colors = ["darkgreen","green","limegreen","darkred","red","lightcoral","blue","royalblue","cornflowerblue"]
@@ -85,5 +85,5 @@ plt.suptitle('Three-body problem')
 
 line_ani = animation.FuncAnimation(fig, update_lines, n+1, fargs=(data, lines), interval=1, blit=False, save_count=n+1)
 writergif = animation.PillowWriter(fps=30)
-line_ani.save("examples/three_body/three_body.gif", writer=writergif)
+line_ani.save("three_body.gif", writer=writergif)
 plt.show()
