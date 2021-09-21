@@ -65,7 +65,7 @@ class PECE:
 
         # calculate first couple of elements (RK4)
         PECEstart = RKMethod(self.rk_start, self.function,  self.parameters)
-        x[:pred_len], y[:pred_len] = PECEstart.run(x0=x0, xf=stepsize*(pred_len-1), y0=y0, init_step=stepsize, adaptive=False)
+        x[:pred_len], y[:pred_len] = PECEstart.run(x0=x0, xf=stepsize*(pred_len-1), y0=[0], init_step=stepsize, adaptive=False)
         
         for i in range(pred_len, stepnum+1):
             # predict values
