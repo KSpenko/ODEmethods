@@ -80,7 +80,7 @@ class RKMethod:
                 stepsize = stepsize * 0.9 * np.minimum(np.maximum(np.sqrt(0.5*np.amin(np.divide(tolerance,np.amax(error[-1])))), 0.3), 2.)
             if endpoint: # HIT endpoint
                 if (backward and x[-1]-stepsize < xf) or (not backward and x[-1]+stepsize > xf):
-                    stepsize(np.absolute(xf-x[-1]))
+                    stepsize = np.absolute(xf-x[-1])
 
             h = stepsize
             if backward:
