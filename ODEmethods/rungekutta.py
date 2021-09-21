@@ -70,7 +70,7 @@ class RKMethod:
         x = [x0]
         y = [y0]
         if calc_error:
-            error = [np.zero(n)]
+            error = [np.zeros(n)]
 
         # iteration LOOP
         while (not backward and x[-1] < xf) or (backward and x[-1] > xf):
