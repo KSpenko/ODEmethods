@@ -85,7 +85,7 @@ class RKMethod:
             h = stepsize
             if backward:
                 h *= -1.
-            prediction = self.single_step(x[-1], y[:,-1], h, calc_error)
+            prediction = self.single_step(x[-1], y[-1], h, calc_error)
             x.append(prediction[0])
             y.append(prediction[1])
             if(calc_error):
