@@ -65,7 +65,7 @@ class PECE:
 
         # calculate first couple of elements (RK4)
         PECEstart = RKMethod(self.rk_start, self.function,  self.parameters)
-        sol = PECEstart.run(x0, y0, pred_len-1, init_step=stepsize, adaptive=False)
+        sol = PECEstart.run(x0=x0, xf=stepsize*(pred_len-1), y0=y0, init_step=stepsize, adaptive=False)
         print(sol[1].shape)
         x[:pred_len] = sol[0]
         y[:pred_len] = sol[1]
