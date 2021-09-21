@@ -25,7 +25,7 @@ class PECE:
     returns: 
         x -> next step,
         y -> predicted value/values at the next step."""
-        return x[-1]+h, y[:,-1]+h*np.dot(self.function(x, y, self.parameters), np.flip(self.predictor))
+        return x[-1]+h, y[-1]+h*np.dot(self.function(x, np.transpose(y), self.parameters), np.flip(self.predictor))
 
     def correct(self, x, y, h):
         """ corrects the current step, based on the corrector method:
@@ -34,7 +34,7 @@ class PECE:
     returns: 
         x -> next step,
         y -> corrected value/values at the next step."""
-        return y[:,-2]+h*np.dot(self.function(x, y, self.parameters), np.flip(self.corrector))
+        return y[-2]+h*np.dot(self.function(x, np.transpose(y), self.parameters), np.flip(self.corrector))
 
     def run(self, x0=0, y0=0, stepnum=100, stepsize=1, runcorr=1):
         """ runs the PECE method for predicting next steps:
@@ -65,11 +65,8 @@ class PECE:
 
         # calculate first couple of elements (RK4)
         PECEstart = RKMethod(self.rk_start, self.function,  self.parameters)
-        sol = PECEstart.run(x0=x0, xf=stepsize*(pred_len-1), y0=y0, init_step=stepsize, adaptive=False)
-        print(sol[1].shape)
-        x[:pred_len] = sol[0]
-        y[:pred_len] = sol[1]
-
+        x[:pred_len], y[:pred_len] = PECEstart.run(x0=x0, xf=stepsize*(pred_len-1), y0=y0, init_step=stepsize, adaptive=False)
+        
         for i in range(pred_len, stepnum+1):
             # predict values
             x[i], y[i] = self.predict(x[i-pred_len:i], y[i-pred_len:i], stepsize)
