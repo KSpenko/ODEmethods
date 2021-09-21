@@ -1,3 +1,4 @@
+from functools import cached_property
 import numpy as np
 
 # Class for running RK methods with Butcher tableu:
@@ -25,17 +26,17 @@ class RKMethod:
         error -> error/errors of values at next step (if the method calculates it)."""
         k = np.zeros((len(y), self.method.shape[1]-1))
         for i in range(self.method.shape[1]-1):
-            k[:,i] = self.function(x+self.method[i][0], y+h*k.dot(self.method[i,1:]), self.parameters)
+            k[:,i] = self.function(x+h*self.method[i][0], y+h*k.dot(self.method[i,1:]), self.parameters)
 
         y_new1 = y + h*k.dot(self.method[-1,1:])
         if(calc_error):
             y_new2 = y + h*k.dot(self.method[-2,1:])
             error = np.absolute(y_new1 - y_new2)
-            return x + h, y_new2, error
+            return x+h, y_new2, error
         else:
-            return x + h, y_new1
+            return x+h, y_new1
 
-    def run(self, x0=0., y0=0., stepnum=100, stepsize=1., adaptive=False, tolerance=1.0e-20):
+    def run(self, x0=0., xf=1., y0=0., init_step=1., adaptive=False, tolerance=1.0e-20, endpoint=True):
         """ runs the RK method for predicting next steps:
     x0, y0 - initial step (y0 can be multidimensional),
     stepnum - number of steps to predict,
@@ -52,38 +53,52 @@ class RKMethod:
             n = len(y0)
         except:
             n = 1
-
+            y0 = [y0]
+        
         # check if method can estimate errors
         calc_error = False
         if(self.method.shape[0] == self.method.shape[1]+1):
             calc_error = True
         
-        # prepare for iterating steps
-        y = np.empty((n, stepnum+1), dtype=float)
-        if(calc_error):
-            error = np.zeros((n, stepnum+1), dtype=float)
+        # check for backward integration
+        stepsize = np.absolute(init_step)
+        backward = False
+        if xf < x0:
+            backward = True
 
         # initial values
-        x = np.arange((stepnum+1), dtype=float)
-        x = x * stepsize + x0 # adaptive step gets adjusted on top
-        y[:,0] = y0
+        x = [x0]
+        y = [y0]
+        if calc_error:
+            error = [n*[0.]]
 
         # iteration LOOP
-        for i in range(1, stepnum + 1):
+        while (not backward and x[-1] < xf) or (backward and x[-1] > xf):
+            if(adaptive):
+                # condition for adaptive stepsize
+                # https://en.wikipedia.org/wiki/Adaptive_step_size 
+                stepsize = stepsize * 0.9 * np.minimum(np.maximum(np.sqrt(0.5*np.amin(np.divide(tolerance,np.amax(error[:,-1])))), 0.3), 2.)
+            if endpoint: # HIT endpoint
+                if (backward and x[-1]-stepsize < xf) or (not backward and x[-1]+stepsize > xf):
+                    stepsize(np.absolute(xf-x[-1]))
+
+            h = stepsize
+            if backward:
+                h *= -1.
+            prediction = self.single_step(x[-1], y[:,-1], h, calc_error)
+            x.append(prediction[0])
+            y.append(prediction[1])
             if(calc_error):
-                if(adaptive):
-                    # condition for adaptive stepsize
-                    # https://en.wikipedia.org/wiki/Adaptive_step_size 
-                    stepsize = stepsize * 0.9 * np.minimum(np.maximum(np.sqrt(0.5*np.amin(np.divide(tolerance,np.amax(error[:,i-1])))), 0.3), 2.)
-                x[i], y[:,i], error[:,i] = self.single_step(x[i-1], y[:,i-1], stepsize, calc_error)
-            else:
-                x[i], y[:,i] = self.single_step(x[i-1], y[:,i-1], stepsize, calc_error)
+                error.append(prediction[2])
 
         # reformat data for user friendly output
+        y = np.array(y)
+        if calc_error:
+            error = np.array(error)
         if n == 1: 
-            y = y[0]
+            y = y[:,0]
             if(calc_error):
-                error = error[0]
+                error = error[:,0]
         if(calc_error):
             return x, y, error
         else:

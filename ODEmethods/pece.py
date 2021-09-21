@@ -60,20 +60,20 @@ class PECE:
         # initial values
         x = np.arange((stepnum+1), dtype=float)
         x = x * stepsize + x0
-        y = np.empty((n, stepnum+1), dtype=float)
-        y[:,0] = y0
+        y = np.empty((stepnum+1, n), dtype=float)
+        y[0] = y0
 
         # calculate first couple of elements (RK4)
         PECEstart = RKMethod(self.rk_start, self.function,  self.parameters)
-        x[:pred_len], y[:,:pred_len] = PECEstart.run(x0, y0, pred_len-1, stepsize, adaptive=False)
+        x[:pred_len], y[:pred_len] = PECEstart.run(x0, y0, pred_len-1, stepsize, adaptive=False)
 
         for i in range(pred_len, stepnum+1):
             # predict values
-            x[i], y[:,i] = self.predict(x[i-pred_len:i], y[:,i-pred_len:i], stepsize)
+            x[i], y[i] = self.predict(x[i-pred_len:i], y[i-pred_len:i], stepsize)
             for j in range(runcorr):  # correct estimate (multiple times)
-                y[:,i] = self.correct(x[i+1-corr_len:i+1], y[:,i+1-corr_len:i+1], stepsize)
+                y[i] = self.correct(x[i+1-corr_len:i+1], y[i+1-corr_len:i+1], stepsize)
         
          # reformat data for user friendly output
         if n == 1: 
-            y = y[0]
+            y = y[:,0]
         return x, y

@@ -43,9 +43,9 @@ class SymIntegrator:
         # initial values
         x = np.arange((stepnum+1), dtype=float)
         x = x * stepsize + x0
-        y = np.empty((len(y0), stepnum+1), dtype=float)
-        y[:,0] = y0
+        y = np.empty((stepnum+1, len(y0)), dtype=float)
+        y[0] = y0
         
         for i in range(1, stepnum + 1):
-            x[i], y[:,i] = self.single_step(x[i-1], y[:,i-1], stepsize)
+            x[i], y[i] = self.single_step(x[i-1], y[i-1], stepsize)
         return x, y
