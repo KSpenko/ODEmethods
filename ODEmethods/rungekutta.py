@@ -70,14 +70,14 @@ class RKMethod:
         x = [x0]
         y = [y0]
         if calc_error:
-            error = [n*[0.]]
+            error = [np.zero(n)]
 
         # iteration LOOP
         while (not backward and x[-1] < xf) or (backward and x[-1] > xf):
             if(adaptive):
                 # condition for adaptive stepsize
                 # https://en.wikipedia.org/wiki/Adaptive_step_size 
-                stepsize = stepsize * 0.9 * np.minimum(np.maximum(np.sqrt(0.5*np.amin(np.divide(tolerance,np.amax(error[:,-1])))), 0.3), 2.)
+                stepsize = stepsize * 0.9 * np.minimum(np.maximum(np.sqrt(0.5*np.amin(np.divide(tolerance,np.amax(error[-1])))), 0.3), 2.)
             if endpoint: # HIT endpoint
                 if (backward and x[-1]-stepsize < xf) or (not backward and x[-1]+stepsize > xf):
                     stepsize(np.absolute(xf-x[-1]))
