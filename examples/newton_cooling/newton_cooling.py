@@ -19,10 +19,10 @@ problem_rk = RKMethod(rk_methods["euler"], heat, par)
 rk1 = problem_rk.run(x0=0, xf=100., y0=21, init_step=1.)
 
 problem_rk.method = rk_methods["cash_karp"]
-rk2 = problem_rk.run(x0=0, xf=100., y0=21, init_step=1., adaptive=True, tolerance=1e-9)
+rk2 = problem_rk.run(x0=0, xf=100., y0=21, init_step=1., adaptive=True, tolerance=1e-6)
 
 problem_rk.method = rk_methods["dormand_prince"]
-rk3 = problem_rk.run(x0=0, xf=100., y0=21, init_step=1., adaptive=True, tolerance=1e-9)
+rk3 = problem_rk.run(x0=0, xf=100., y0=21, init_step=1., adaptive=True, tolerance=1e-6)
 
 # PECE methods
 problem_pc = PECE(predictor[0], corrector[0], heat, par)
@@ -38,10 +38,10 @@ sc1 = scipy.integrate.solve_ivp(heat, t_span=(0, 100), y0=[21], t_eval=sct)
 sc2 = scipy.integrate.odeint(heat, t=sct, y0=[21], tfirst=True)
 sc2 = np.transpose(sc2)[0]
 
-sc3_solver = scipy.integrate.RK45(heat, 0, [21], t_bound=100., atol=1e-9, rtol=1e-9)
-sc4_solver = scipy.integrate.DOP853(heat, 0, [21], t_bound=100., atol=1e-9, rtol=1e-9)
+sc3_solver = scipy.integrate.RK45(heat, 0, [21], t_bound=100., first_step=1.)
+sc4_solver = scipy.integrate.DOP853(heat, 0, [21], t_bound=100., first_step=1.)
 def scipy_run(sc_solver):
-    sc = [[],[]]
+    sc = [[0.],[21.]]
     while True:
         try:
             sc_solver.step()
@@ -72,7 +72,7 @@ plt.plot(sc4[0], sc4[1], label='scipy.DOP853', color='green')
 plt.plot(rk2[0], analytical_heat(rk2[0], 21, par), label='analytical', color='black', linestyle='--')
 plt.xlabel(r'$t$')
 plt.ylabel(r'$T(t)$')
-plt.legend(fontsize="x-small")
+plt.legend(fontsize="xx-small")
 
 plt.subplot(2, 2, 2)
 plt.errorbar(rk2[0], rk2[1], yerr=rk2[2], label='cash-karp', color='red')
@@ -88,7 +88,7 @@ plt.plot(rk2[0], analytical_heat(rk2[0], 21, par), label='analytical', color='bl
 plt.xlabel(r'$t$')
 plt.ylabel(r'$T(t)$')
 plt.xlim(-1., 50.)
-plt.legend(fontsize="x-small")
+plt.legend(fontsize="xx-small")
 
 plt.subplot(2, 2, 3)
 plt.semilogy(rk2[0], rk2[2], label='ck_estimate', color='salmon', linestyle='--')
@@ -100,11 +100,11 @@ plt.semilogy(pc1[0], np.absolute(pc1[1]-analytical_heat(pc1[0], 21, par)), label
 plt.semilogy(pc2[0], np.absolute(pc2[1]-analytical_heat(pc2[0], 21, par)), label='p4c4_3', color='blue')
 plt.semilogy(sc1['t'], np.absolute(sc1['y'][0]-analytical_heat(sc1['t'], 21, par)), label='scipy.solve_ivp', color='purple')
 plt.semilogy(sct, np.absolute(sc2-analytical_heat(sct, 21, par)), label='scipy.odeint', color='fuchsia')
-plt.semilogy(sc3[0], np.absolute(sc3[0]-analytical_heat(sc3[0], 21, par)), label='scipy.RK45', color='brown')
-plt.semilogy(sc4[0], np.absolute(sc4[0]-analytical_heat(sc4[0], 21, par)), label='scipy.DOP853', color='green')
+plt.semilogy(sc3[0], np.absolute(sc3[1]-analytical_heat(sc3[0], 21, par)), label='scipy.RK45', color='brown')
+plt.semilogy(sc4[0], np.absolute(sc4[1]-analytical_heat(sc4[0], 21, par)), label='scipy.DOP853', color='green')
 plt.xlabel(r'$t$')
 plt.ylabel(r'$\Delta T(t)$')
-plt.legend(fontsize="x-small")
+plt.legend(fontsize="xx-small")
 
 plt.subplot(2, 2, 4)
 plt.loglog(rk2[0], rk2[2], label='ck_estimate', color='salmon', linestyle='--')
@@ -116,11 +116,11 @@ plt.loglog(pc1[0], np.absolute(pc1[1]-analytical_heat(pc1[0], 21, par)), label='
 plt.loglog(pc2[0], np.absolute(pc2[1]-analytical_heat(pc2[0], 21, par)), label='p4c4_3', color='blue')
 plt.loglog(sc1['t'], np.absolute(sc1['y'][0]-analytical_heat(sc1['t'], 21, par)), label='scipy.solve_ivp', color='purple')
 plt.loglog(sct, np.absolute(sc2-analytical_heat(sct, 21, par)), label='scipy.odeint', color='fuchsia')
-plt.loglog(sc3[0], np.absolute(sc3[0]-analytical_heat(sc3[0], 21, par)), label='scipy.RK45', color='brown')
-plt.loglog(sc4[0], np.absolute(sc4[0]-analytical_heat(sc4[0], 21, par)), label='scipy.DOP853', color='green')
+plt.loglog(sc3[0], np.absolute(sc3[1]-analytical_heat(sc3[0], 21, par)), label='scipy.RK45', color='brown')
+plt.loglog(sc4[0], np.absolute(sc4[1]-analytical_heat(sc4[0], 21, par)), label='scipy.DOP853', color='green')
 plt.xlabel(r'$t$')
 plt.ylabel(r'$\Delta T(t)$')
-plt.legend(fontsize="x-small")
+plt.legend(fontsize="xx-small")
 
 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.92, wspace=0.25, hspace=0.3)
 plt.savefig("newton_cooling.png")
