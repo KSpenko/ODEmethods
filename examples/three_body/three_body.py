@@ -30,21 +30,22 @@ def three_body(t, y, par=[1., 0.1, 2., 1.]):
     az3 = par[1]*fg13*np.divide((-y[4]+y[16]), r13) + par[2]*fg23*np.divide((-y[10]+y[16]), r23)
     return [v[0], ax1, v[1], ay1, v[2], az1, v[3], ax2, v[4], ay2, v[5], az2, v[6], ax3, v[7], ay3, v[8], az3]
 
-par=[2.5, 1., 2., 3.]
+par=[1., 1., 1., 1.]
 n=1000
-h=0.2
-y0_1 = [-7.,-0.7,7.,0.2,0.,-0.1]
-y0_2 = [-12.,0.5,17.,-0.2,-4.,0.2]
-y0_3 = [-17.,0.2,12.,0.,5.,-0.3]
-y0 = np.concatenate((y0_1, y0_2, y0_3))
+h=0.1
+y0_1 = [0,0,0,-1,-1,0]
+y0_2 = [0,1,0,1,0,0]
+y0_3 = [0,-1,0,0,1,0]
+y0 = np.concatenate((y0_1, y0_2, y0_3), dtype=float)
+print(y0)
 
 # SymIntegrator methods
 problem_si = SymIntegrator(sym_methods["PEFRL"], three_body, par)
-si1 = problem_si.run(x0=0, y0=y0, stepnum=n, stepsize=h)
-y0[0] += 0.0001
-si2 = problem_si.run(x0=0, y0=y0, stepnum=n, stepsize=h)
-y0[0] += 0.0001
 si3 = problem_si.run(x0=0, y0=y0, stepnum=n, stepsize=h)
+y0[11] -= 0.001
+si2 = problem_si.run(x0=0, y0=y0, stepnum=n, stepsize=h)
+y0[11] += 0.002
+si1 = problem_si.run(x0=0, y0=y0, stepnum=n, stepsize=h)
 
 # 3D Plotting Script:----------------------------------------------------------------
 def update_lines(num, dataLines, lines):
@@ -74,13 +75,14 @@ for i in range(len(data)):
     lines.append(ax.plot(data[i][0, 0:1], data[i][1, 0:1], data[i][2, 0:1])[0])
     lines[-1].set_color(colors[i])
 
-ax.set_xlim3d([-20.0, 20.0])
-ax.set_ylim3d([-20.0, 20.0])
-ax.set_zlim3d([-20.0, 20.0])
+ax.set_xlim3d([-5.0, 5.0])
+ax.set_ylim3d([-5.0, 5.0])
+ax.set_zlim3d([-5.0, 5.0])
 
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
+ax.view_init(29, 67)
 plt.suptitle('Three-body problem')
 
 line_ani = animation.FuncAnimation(fig, update_lines, n+1, fargs=(data, lines), interval=1, blit=False, save_count=n+1)
