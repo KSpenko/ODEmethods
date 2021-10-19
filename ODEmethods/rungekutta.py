@@ -1,4 +1,3 @@
-from functools import cached_property
 import numpy as np
 
 # Class for running RK methods with Butcher tableu:
